@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx" 
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="transport.control.ValidateController"
+            style="-fx-padding: 20;">
+
+    <center>
+        <VBox spacing="10">
+            <TextField fx:id="fareIdField" promptText="Enter Fare ID"/>
+            <Button text="Validate" onAction="#handleValidate"/>
+            <Label fx:id="resultLabel" style="-fx-font-weight: bold;"/>
+        </VBox>
+    </center>
+
+    <bottom>
+        <Button text="Back" onAction="#handleBack"/>
+    </bottom>
+
+</BorderPane>

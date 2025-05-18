@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx" 
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="transport.control.AddUserController"
+            style="-fx-padding: 20;">
+
+    <center>
+        <GridPane hgap="10" vgap="10">
+            <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="firstNameField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+            <Label text="Last Name:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <TextField fx:id="lastNameField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+            <Label text="Birth Date:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <DatePicker fx:id="birthDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+            <Label text="Disabled:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <CheckBox fx:id="handicapCheck" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+            <Label text="User Type:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <ComboBox fx:id="userTypeCombo" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                <String fx:value="Passenger"/>
+                <String fx:value="Employee"/>
+            </ComboBox>
+
+            <Label text="Employee Function:" GridPane.columnIndex="0" GridPane.rowIndex="5" 
+                   visible="false"/>
+            <ComboBox fx:id="functionCombo" GridPane.columnIndex="1" GridPane.rowIndex="5" 
+                      visible="false"/>
+        </GridPane>
+    </center>
+
+    <bottom>
+        <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
+            <Button text="Save User" onAction="#handleSaveUser"/>
+            <Button text="Back" onAction="#handleBack"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>
