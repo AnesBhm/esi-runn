@@ -20,4 +20,8 @@ public abstract class Personne implements Serializable {
     public String getPrenom() { return prenom; }
     public LocalDate getDateNaissance() { return dateNaissance; }
     public boolean estHandicape() { return estHandicape; }
+    @Override
+    public String toString() {
+        return prenom + " " + nom;
+    }
 }
