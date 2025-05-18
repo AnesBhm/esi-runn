@@ -3,6 +3,13 @@
   "configurations": [
     {
         "type": "java",
+        "name": "Test",
+        "request": "launch",
+        "mainClass": "transport.Test",
+        "projectName": "testTp4_11ac9dd3"
+    },
+    {
+        "type": "java",
         "name": "Main",
         "request": "launch",
         "mainClass": "transport.Main",
