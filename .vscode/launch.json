@@ -2,32 +2,36 @@
   "version": "0.2.0",
   "configurations": [
     {
-        "type": "java",
-        "name": "Test",
-        "request": "launch",
-        "mainClass": "transport.Test",
-        "projectName": "testTp4_11ac9dd3"
+      "type": "java",
+      "name": "Run transport.Main (JavaFX)",
+      "request": "launch",
+      "mainClass": "transport.Main",
+      "projectName": "esi-runn_e6dd1bbb",
+      "vmArgs": [
+        "--module-path",
+        "C:\\javafx-sdk-24.0.1\\lib",
+        "--add-modules",
+        "javafx.controls,javafx.fxml"
+      ]
     },
     {
-        "type": "java",
-        "name": "Main",
-        "request": "launch",
-        "mainClass": "transport.Main",
-        "projectName": "testTp4_11ac9dd3"
+      "type": "java",
+      "name": "Run transport.Test",
+      "request": "launch",
+      "mainClass": "transport.Test",
+      "projectName": "testTp4_11ac9dd3"
     },
     {
-        "type": "java",
-        "name": "App",
-        "request": "launch",
-        "mainClass": "App",
-        "projectName": "testTp4_11ac9dd3"
-    },
-    {
-        "type": "java",
-        "name": "Launch Main",
-        "request": "launch",
-        "mainClass": "core.Main",
-        "vmArgs": "--module-path lib --add-modules javafx.controls,javafx.fxml"
+      "type": "java",
+      "name": "Run core.Main (JavaFX)",
+      "request": "launch",
+      "mainClass": "core.Main",
+      "vmArgs": [
+        "--module-path",
+        "C:\\javafx-sdk-24.0.1\\lib",
+        "--add-modules",
+        "javafx.controls,javafx.fxml"
+      ]
     }
-]
+  ]
 }
