@@ -50,37 +50,32 @@ public class PurchaseFareController {
 
     @FXML
     private void handlePurchase() {
-        try {
-            Personne user = userCombo.getValue();
-            String type = fareTypeCombo.getValue();
-            String payment = paymentMethodCombo.getValue();
+        Personne user = userCombo.getValue();
+        String type = fareTypeCombo.getValue();
+        String payment = paymentMethodCombo.getValue();
 
-            // create the fare
-            TitreTransport fare = "Personal Card".equals(type)
-                    ? new CartePersonnelle(user)
-                    : new Ticket(user);
+        // create the fare
+        TitreTransport fare = "Personal Card".equals(type)
+                ? new CartePersonnelle(user)
+                : new Ticket(user);
 
-            fare.setPaymentMethod(payment); // purchase date already set in ctor
-            fareMedia.add(fare);
+        fare.setPaymentMethod(payment); // purchase date already set in ctor
+        fareMedia.add(fare);
 
-            // persist immediately
-            mainController.saveData();
+        // persist immediately
+        mainController.saveData();
 
-            // 1) Show confirmation alert
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Purchase Complete");
-            alert.setHeaderText(null);
-            alert.setContentText(
-                    String.format("Purchased successfully!\nPrice: %.2f DA", fare.getPrix()));
-            alert.showAndWait(); // <-- wait for user to click OK
+        // 1) Show confirmation alert
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Purchase Complete");
+        alert.setHeaderText(null);
+        alert.setContentText(
+                String.format("Purchased successfully!\nID : %d\nPrice: %.2f DA", fare.getId(), fare.getPrix()));
+        alert.showAndWait(); // <-- wait for user to click OK
 
-            // 2) Go back to main menu
-            Stage stage = (Stage) priceLabel.getScene().getWindow();
-            stage.setScene(Main.getMainScene());
-
-        } catch (ReductionImpossibleException e) {
-            showAlert("Cannot create card: " + e.getMessage());
-        }
+        // 2) Go back to main menu
+        Stage stage = (Stage) priceLabel.getScene().getWindow();
+        stage.setScene(Main.getMainScene());
     }
 
     private void refreshSoldList() {

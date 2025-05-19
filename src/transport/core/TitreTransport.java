@@ -2,12 +2,13 @@ package transport.core;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public abstract class TitreTransport implements Serializable {
     protected int id;
     protected LocalDate dateAchat;
+    protected LocalDateTime datePrecise;
     protected double prix;
-    public static int counter = 0;
     private String paymentMethod;
 
     public abstract boolean estValide(LocalDate dateValidation) throws TitreNonValideException;
@@ -26,7 +27,8 @@ public abstract class TitreTransport implements Serializable {
     }
 
     protected int generateId() {
-        return ++counter;
+        // Generate a unique ID for each ticket based on datePrecise
+        return (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
     }
 
     public String getPaymentMethod() {

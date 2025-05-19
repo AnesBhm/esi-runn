@@ -8,7 +8,7 @@ public class CartePersonnelle extends TitreTransport {
     private TypeCarte type;
     private final LocalDate dateExpiration;
 
-    public CartePersonnelle(Personne proprietaire) throws ReductionImpossibleException {
+    public CartePersonnelle(Personne proprietaire) {
         this.id = generateId();
         this.proprietaire = proprietaire;
         this.dateAchat = LocalDate.now();
@@ -16,7 +16,7 @@ public class CartePersonnelle extends TitreTransport {
         calculerReduction();
     }
 
-    private void calculerReduction() throws ReductionImpossibleException {
+    public void calculerReduction() {
         double reduction = 0;
         int age = Period.between(proprietaire.getDateNaissance(), LocalDate.now()).getYears();
 
@@ -28,9 +28,6 @@ public class CartePersonnelle extends TitreTransport {
             reduction = 0.3;
         else if (age > 65)
             reduction = 0.25;
-
-        if (reduction == 0)
-            throw new ReductionImpossibleException();
 
         this.prix = 5000 * (1 - reduction);
         determinerType(reduction);
@@ -61,9 +58,11 @@ public class CartePersonnelle extends TitreTransport {
 
     @Override
     public String toString() {
-        return String.format("%s for %s on %s — %.2f DA via %s",
-                this.getClass().getSimpleName(),
-                proprietaire,
+        return String.format(
+                "[%d] %s for %s on %s — %.2f DA via %s",
+                id,
+                getClass().getSimpleName(),
+                proprietaire.toString(),
                 dateAchat,
                 prix,
                 getPaymentMethod());

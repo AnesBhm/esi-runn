@@ -23,11 +23,14 @@ public class Ticket extends TitreTransport {
 
     @Override
     public String toString() {
-        return String.format("%s for %s on %s — %.2f DA via %s",
-                this.getClass().getSimpleName(),
-                proprietaire,
+        return String.format(
+                "[%d] %s for %s on %s — %.2f DA via %s",
+                id,
+                getClass().getSimpleName(),
+                proprietaire.toString(),
                 dateAchat,
                 prix,
                 getPaymentMethod());
     }
+
 }
