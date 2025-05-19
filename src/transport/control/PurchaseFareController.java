@@ -54,6 +54,19 @@ public class PurchaseFareController {
         String type = fareTypeCombo.getValue();
         String payment = paymentMethodCombo.getValue();
 
+        if (type == null) {
+            showAlert("Please select a fare type (Ticket or Personal Card).");
+            return;
+        }
+        if (payment == null) {
+            showAlert("Please select a payment method.");
+            return;
+        }
+        if (user == null) {
+            showAlert("Please select a user to purchase for.");
+            return;
+        }
+
         // create the fare
         TitreTransport fare = "Personal Card".equals(type)
                 ? new CartePersonnelle(user)

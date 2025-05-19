@@ -25,7 +25,7 @@
             <Label text="Description"/>
             <TextArea fx:id="descriptionField" promptText="Details…"/>
 
-            <Button text="Submit" onAction="#handleSubmit"/>
+            <Button fx:id="submitButton" text="Submit" onAction="#handleSubmit"/>
         </VBox>
     </center>
 

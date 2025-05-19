@@ -5,6 +5,7 @@ import transport.Main;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 
@@ -14,14 +15,21 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ComplaintsController {
-    @FXML private ComboBox<Personne>   reporterCombo;   // still users
-    @FXML private ComboBox<Suspendable> targetCombo;    // now Suspendable
-    @FXML private ComboBox<String>     typeCombo;
-    @FXML private TextArea             descriptionField;
-    @FXML private ListView<Reclamation> complaintsListView;
+    @FXML
+    private ComboBox<Personne> reporterCombo; // still users
+    @FXML
+    private ComboBox<Suspendable> targetCombo; // now Suspendable
+    @FXML
+    private ComboBox<String> typeCombo;
+    @FXML
+    private TextArea descriptionField;
+    @FXML
+    private ListView<Reclamation> complaintsListView;
+    @FXML
+    private Button submitButton;
 
-    private List<Personne>    users;
-    private List<Suspendable> targets;      // stations + transports
+    private List<Personne> users;
+    private List<Suspendable> targets; // stations + transports
     private List<Reclamation> complaints;
 
     public void setUsers(List<Personne> users) {
@@ -43,48 +51,75 @@ public class ComplaintsController {
     @FXML
     private void initialize() {
         typeCombo.getItems().setAll("TECHNIQUE", "SERVICE", "PAYMENT");
+        // disable unless everything is non-null/non-empty
+        BooleanBinding formValid = reporterCombo.valueProperty().isNotNull()
+                .and(targetCombo.valueProperty().isNotNull())
+                .and(typeCombo.valueProperty().isNotNull())
+                .and(new BooleanBinding() {
+                    {
+                        super.bind(descriptionField.textProperty());
+                    }
+                    @Override
+                    protected boolean computeValue() {
+                        return !descriptionField.getText().trim().isEmpty();
+                    }
+                });
+
+        submitButton.disableProperty().bind(formValid.not());
+
     }
 
     @FXML
     private void handleSubmit() {
-        Personne reporter     = reporterCombo.getValue();
-        Suspendable target    = targetCombo.getValue();
-        String      typeStr   = typeCombo.getValue();
-        String      desc      = descriptionField.getText();
+        Personne reporter = reporterCombo.getValue();
+        Suspendable target = targetCombo.getValue();
+        String typeStr = typeCombo.getValue();
+        String desc = descriptionField.getText().trim(); // ← trim spaces
 
-        if (reporter==null || target==null
-          || typeStr==null || desc.isBlank()) {
+        // 1) Validate inputs
+        if (reporter == null ||
+                target == null ||
+                typeStr == null ||
+                desc.isEmpty()) {
             showAlert("Please select reporter, target, type, and enter a description.");
             return;
         }
 
-        Reclamation rec = new Reclamation(
-            reporter,
-            TypeReclamation.valueOf(typeStr),
-            target,
-            desc,
-            LocalDate.now()
-        );
-        complaints.add(rec);
+        // 2) Convert to enum safely
+        TypeReclamation type;
+        try {
+            type = TypeReclamation.valueOf(typeStr);
+        } catch (IllegalArgumentException iae) {
+            showAlert("Unknown complaint type: " + typeStr);
+            return;
+        }
 
+        // 3) Record the complaint
+        Reclamation rec = new Reclamation(
+                reporter,
+                type,
+                target,
+                desc,
+                LocalDate.now());
+        complaints.add(rec);
         showAlert("Complaint submitted against: " + target);
 
         refreshComplaintList();
 
-        // suspend if >3 complaints
-        Map<Suspendable, Long> counts = complaints.stream()
-            .collect(Collectors.groupingBy(Reclamation::getCible,
-                                           Collectors.counting()));
-
-        long c = counts.getOrDefault(target, 0L);
-        if (c > 3) {
-            showAlert("⚠️ " + target + " has " + c + " complaints → SUSPENDED!");
-            target.suspendre();  // now actually suspend
+        // 4) Suspend if needed
+        long count = complaints.stream()
+                .filter(r -> r.getCible().equals(target))
+                .count();
+        if (count > 3) {
+            showAlert("⚠️ " + target + " has " + count + " complaints → SUSPENDED!");
+            target.suspendre();
         }
 
-        // clear form
-        descriptionField.clear();
+        // 5) Clear the form
+        reporterCombo.getSelectionModel().clearSelection();
+        targetCombo.getSelectionModel().clearSelection();
         typeCombo.getSelectionModel().clearSelection();
+        descriptionField.clear();
     }
 
     private void refreshComplaintList() {
@@ -93,7 +128,7 @@ public class ComplaintsController {
 
     @FXML
     private void handleBack(ActionEvent event) {
-        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(Main.getMainScene());
     }
 

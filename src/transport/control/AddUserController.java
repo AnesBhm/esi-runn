@@ -55,6 +55,44 @@ public class AddUserController {
 
     @FXML
     private void handleSaveUser() {
+        // 1) Validate first & last names
+        String first = firstNameField.getText().trim();
+        String last = lastNameField.getText().trim();
+        if (first.isEmpty() || last.isEmpty()) {
+            showAlert("First name and last name must not be empty.");
+            return;
+        }
+        // Only letters and spaces allowed
+        if (!first.matches("[A-Za-z ]+") || !last.matches("[A-Za-z ]+")) {
+            showAlert("Names can only contain letters and spaces.");
+            return;
+        }
+
+        // 2) Validate birth date
+        LocalDate dob = birthDatePicker.getValue();
+        if (dob == null) {
+            showAlert("Please enter a birth date.");
+            return;
+        }
+        if (!dob.isBefore(LocalDate.now())) {
+            showAlert("Birth date must be before today.");
+            return;
+        }
+
+        // 3) Validate user type selection
+        String type = userTypeCombo.getValue();
+        if (type == null) {
+            showAlert("Please select User Type (Passenger or Employee).");
+            return;
+        }
+
+        // 4) If Employee, ensure a function is chosen
+        if ("Employee".equals(type) && functionCombo.getValue() == null) {
+            showAlert("Please select an Employee Function.");
+            return;
+        }
+
+        // All checks passed → proceed to creation
         try {
             Personne user = createUser();
             users.add(user);
