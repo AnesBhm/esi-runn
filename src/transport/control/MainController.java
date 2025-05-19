@@ -17,6 +17,11 @@ public class MainController {
     private List<Personne> users = new ArrayList<>();
     private List<TitreTransport> fareMedia = new ArrayList<>();
     private List<Reclamation> complaints = new ArrayList<>();
+    private List<Station> stationsList = List.of(
+            new Station("Oued Smar"), new Station("Bab Ezzouar"), new Station("El Harrach"));
+    private List<MoyenTransport> vehiclesList = List.of(
+            new MoyenTransport("Bus1"), new MoyenTransport("Bus2"), new MoyenTransport("Bus3"));
+
     private Stage primaryStage;
 
     @FXML
@@ -88,14 +93,25 @@ public class MainController {
     @FXML
     private void handleComplaints(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/transport/ui/Complaints.fxml"));
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/transport/ui/Complaints.fxml"));
             Parent root = loader.load();
 
-            ComplaintsController controller = loader.getController();
-            controller.setComplaints(complaints);
+            ComplaintsController ctrl = loader.getController();
+            // supply your existing users
+            ctrl.setUsers(users);
+            // supply all suspendable entities: for example
+            List<Suspendable> allTargets = new ArrayList<>();
+            allTargets.addAll(stationsList); // your List<Station>
+            allTargets.addAll(vehiclesList); // your List<MoyenTransport>
+            ctrl.setTargets(allTargets);
+
+            // supply the shared complaints list
+            ctrl.setComplaints(complaints);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
+
         } catch (IOException e) {
             showAlert("Error loading Complaints form: " + e.getMessage());
         }

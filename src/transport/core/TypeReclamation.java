@@ -7,5 +7,5 @@ package transport.core;
  */
 public enum TypeReclamation
 {
-    TECHNIQUE, SERVICE
+    TECHNIQUE, SERVICE, PAYMENT
 }

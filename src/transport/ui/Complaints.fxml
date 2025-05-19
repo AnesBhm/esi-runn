@@ -3,6 +3,7 @@
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import transport.core.Suspendable?>
 
 <BorderPane xmlns="http://javafx.com/javafx" 
             xmlns:fx="http://javafx.com/fxml"
@@ -11,22 +12,30 @@
 
     <center>
         <VBox spacing="10">
-            <ComboBox fx:id="typeCombo" promptText="Complaint Type">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="TECHNIQUE"/>
-                        <String fx:value="SERVICE"/>
-                    </FXCollections>
-                </items>
-            </ComboBox>
+            <Label text="Who is reporting?"/>
+            <ComboBox fx:id="reporterCombo" promptText="Select Reporter"/>
 
-            <TextArea fx:id="descriptionField" promptText="Description"/>
+            <Label text="Complaint Type"/>
+            <ComboBox fx:id="typeCombo" promptText="Select Type"/>
+
+
+            <Label text="Target (entity to suspend)"/>
+            <ComboBox fx:id="targetCombo" promptText="Select Target"/>
+
+            <Label text="Description"/>
+            <TextArea fx:id="descriptionField" promptText="Details…"/>
+
             <Button text="Submit" onAction="#handleSubmit"/>
         </VBox>
     </center>
 
     <bottom>
-        <Button text="Back" onAction="#handleBack"/>
+        <VBox spacing="10" style="-fx-padding:10 0 0 0;">
+            <HBox spacing="10">
+                <Button text="Back" onAction="#handleBack"/>
+            </HBox>
+            <Label text="All Complaints:" style="-fx-font-weight:bold;"/>
+            <ListView fx:id="complaintsListView" prefHeight="200"/>
+        </VBox>
     </bottom>
-
 </BorderPane>
