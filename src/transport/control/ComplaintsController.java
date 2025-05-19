@@ -1,59 +1,81 @@
 package transport.control;
 
-import transport.core.*;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
-import javafx.event.ActionEvent;
-import javafx.scene.Node;
+import transport.core.Reclamation;
 import transport.Main;
+import transport.core.Personne;
+import transport.core.Suspendable;
+import transport.core.ServiceReclamation;
+import transport.core.TypeReclamation;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public class ComplaintsController {
-    @FXML private ComboBox<String> typeCombo;
+    @FXML private ComboBox<TypeReclamation> typeCombo;
+    @FXML private ComboBox<Personne> userCombo;
+    @FXML private ComboBox<Suspendable> targetCombo;
     @FXML private TextArea descriptionField;
+
+    private ServiceReclamation service;
+    private List<Personne> users;
+    private List<Suspendable> targets;
     private List<Reclamation> complaints;
-    private Personne currentUser;
-    private Suspendable currentTarget; // Replace Object with the actual type if known
 
-    public void setComplaints(List<Reclamation> complaints) {
-        this.complaints = complaints;
+    public void initialize() {
+        typeCombo.getItems().setAll(TypeReclamation.values());
     }
 
-    public void setCurrentUser(Personne user) {
-        this.currentUser = user;
-    }
+    public void setData(ServiceReclamation service,
+                        List<Personne> users,
+                        List<Suspendable> targets) {
+        this.service = service;
+        this.users = users;
+        this.targets = targets;
 
-    public void setCurrentTarget(Suspendable target) { // Replace Object with the actual type if known
-        this.currentTarget = target;
+        userCombo.getItems().setAll(users);
+        targetCombo.getItems().setAll(targets);
     }
 
     @FXML
     private void handleSubmit() {
-        TypeReclamation type = TypeReclamation.valueOf(typeCombo.getValue());
+        TypeReclamation type = typeCombo.getValue();
+        Personne p = userCombo.getValue();
+        Suspendable cible = targetCombo.getValue();
         String desc = descriptionField.getText();
-        
-        complaints.add(new Reclamation(
-            currentUser, // You'll need to pass logged-in user
-            type,
-            currentTarget, // Need to implement target selection
-            desc,
-            LocalDate.now()
-        ));
-        
-        showAlert("Complaint submitted!");
+
+        Reclamation rec = new Reclamation(p, type, cible, desc, LocalDate.now());
+        Optional<String> suspensionMsg = service.soumettre(rec);
+
+        new Alert(Alert.AlertType.INFORMATION, "Réclamation enregistrée !").showAndWait();
+        suspensionMsg.ifPresent(msg ->
+            new Alert(Alert.AlertType.WARNING, msg).showAndWait()
+        );
     }
     @FXML
     private void handleBack(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(Main.getMainScene());
-    }
+}
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    public void setComplaints(List<Reclamation> complaints) {
+        this.complaints = complaints;
     }
 }

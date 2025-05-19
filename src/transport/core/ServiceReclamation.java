@@ -1,6 +1,8 @@
 package transport.core;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.Optional;
 
 public class ServiceReclamation {
 
@@ -9,7 +11,7 @@ public class ServiceReclamation {
     private final Map<Personne, TreeSet<Reclamation>> reclamationsParPersonne = new HashMap<>();
     private final Map<Suspendable, TreeSet<Reclamation>> reclamationsParSuspendable = new HashMap<>();
 
-    public void soumettre(Reclamation reclamation) {
+    public Optional<String> soumettre(Reclamation reclamation) {
     // Add to reclamationsParType, sorted by numero
     addToMap(reclamationsParType, reclamation.getType(), reclamation,
         new Comparator<Reclamation>() {
@@ -50,6 +52,13 @@ public class ServiceReclamation {
 
     // Check if the cible should be suspended
     checkSuspension(reclamation.getCible());
+    if (reclamation.getCible().estSuspendu()) {
+            return Optional.of(
+                String.format("%s a été suspendu après %d réclamations.",
+                              reclamation.getCible(),
+                              reclamationsParSuspendable.get(reclamation.getCible()).size()));
+        }
+        return Optional.empty();
 }
 
     private <K> void addToMap(Map<K, TreeSet<Reclamation>> map, K key, Reclamation rec, Comparator<Reclamation> comp) {
@@ -72,6 +81,7 @@ public class ServiceReclamation {
         removeFromMap(reclamationsParType, reclamation.getType(), reclamation);
         removeFromMap(reclamationsParPersonne, reclamation.getPersonne(), reclamation);
         removeFromMap(reclamationsParSuspendable, reclamation.getCible(), reclamation);
+        checkSuspension(reclamation.getCible());
         checkSuspension(reclamation.getCible());
     }
 
@@ -116,6 +126,12 @@ public class ServiceReclamation {
                 System.out.println(rec);
             }
         }
+    }
+     public List<Reclamation> getAllReclamations() {
+        return reclamationsParType.values().stream()
+                  .flatMap(Set::stream)
+                  .sorted(Comparator.comparingInt(Reclamation::getNumero))
+                  .collect(Collectors.toList());
     }
 
 }

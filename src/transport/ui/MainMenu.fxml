@@ -2,26 +2,15 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx" 
+<VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="transport.control.MainController"
-      spacing="10" 
-      style="-fx-padding: 20; -fx-background-color: #f0f0f0;">
+      spacing="10" style="-fx-padding: 20; -fx-background-color: #ffffff;">
 
-    <Button text="Add User" 
-            onAction="#handleAddUser"
-            style="-fx-font-size: 14; -fx-pref-width: 200;"/>
-
-    <Button text="Purchase Fare Medium" 
-            onAction="#handlePurchaseFare"
-            style="-fx-font-size: 14; -fx-pref-width: 200;"/>
-
-    <Button text="Validate Fare" 
-            onAction="#handleValidateFare"
-            style="-fx-font-size: 14; -fx-pref-width: 200;"/>
-
-    <Button text="Manage Complaints (Bonus)" 
-            onAction="#handleComplaints"
-            style="-fx-font-size: 14; -fx-pref-width: 200;"/>
+    <Button fx:id="btnAddUser" text="Add User" onAction="#handleAddUser" style="-fx-font-size: 14; -fx-pref-width: 200;"/>
+    <Button fx:id="btnPurchaseFare" text="Purchase Fare" onAction="#handlePurchaseFare" style="-fx-font-size: 14; -fx-pref-width: 200;"/>
+    <Button fx:id="btnValidateFare" text="Validate Fare" onAction="#handleValidateFare" style="-fx-font-size: 14; -fx-pref-width: 200;"/>
+    <Button fx:id="btnRegisterComplaint" text="Register Complaint" onAction="#handleRegisterComplaint" style="-fx-font-size: 14; -fx-pref-width: 200;"/>
+    <Button fx:id="btnListComplaints" text="List Complaints" onAction="#handleListComplaints" style="-fx-font-size: 14; -fx-pref-width: 200;"/>
 
 </VBox>

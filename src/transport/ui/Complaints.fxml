@@ -1,32 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import java.lang.String?>
-<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx" 
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="transport.control.ComplaintsController"
-            style="-fx-padding: 20;">
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="transport.control.ComplaintsController"
+      spacing="10" style="-fx-padding: 20; -fx-background-color: #f0f0f0;">
 
-    <center>
-        <VBox spacing="10">
-            <ComboBox fx:id="typeCombo" promptText="Complaint Type">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="TECHNIQUE"/>
-                        <String fx:value="SERVICE"/>
-                    </FXCollections>
-                </items>
-            </ComboBox>
-
-            <TextArea fx:id="descriptionField" promptText="Description"/>
-            <Button text="Submit" onAction="#handleSubmit"/>
-        </VBox>
-    </center>
-
-    <bottom>
-        <Button text="Back" onAction="#handleBack"/>
-    </bottom>
-
-</BorderPane>
+    <ComboBox fx:id="typeCombo" promptText="Type de réclamation"/>
+    <ComboBox fx:id="userCombo" promptText="Utilisateur"/>
+    <ComboBox fx:id="targetCombo" promptText="Cible (Station/Moyen)"/>
+    <TextArea fx:id="descriptionField" promptText="Description"/>
+    <Button text="Envoyer" onAction="#handleSubmit" style="-fx-font-size: 14; -fx-pref-width: 200;"/>
+    <Button text="Retour" onAction="#handleBack" style="-fx-font-size: 14; -fx-pref-width: 200;"/>
+</VBox>
