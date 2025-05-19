@@ -110,7 +110,7 @@ public class ComplaintsController {
         long count = complaints.stream()
                 .filter(r -> r.getCible().equals(target))
                 .count();
-        if (count > 3) {
+        if (count == 3) {
             showAlert("⚠️ " + target + " has " + count + " complaints → SUSPENDED!");
             target.suspendre();
         }

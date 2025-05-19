@@ -7,11 +7,14 @@
 <BorderPane xmlns="http://javafx.com/javafx"
     xmlns:fx="http://javafx.com/fxml"
     fx:controller="transport.control.PurchaseFareController"
-    style="-fx-padding: 20;">
+    stylesheets="@style.css"
+    styleClass="borderpane-purchase">
 
     <center>
-        <VBox spacing="10">
-            <ComboBox fx:id="fareTypeCombo" promptText="Select Fare Type">
+        <VBox spacing="10" styleClass="vbox-purchase">
+            <ComboBox fx:id="fareTypeCombo"
+                      promptText="Select Fare Type"
+                      styleClass="combo-purchase">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
                         <String fx:value="Ticket" />
@@ -20,8 +23,10 @@
                 </items>
             </ComboBox>
 
-            <!-- NEW: payment method -->
-            <ComboBox fx:id="paymentMethodCombo" promptText="Select Payment Method">
+            <!-- payment method -->
+            <ComboBox fx:id="paymentMethodCombo"
+                      promptText="Select Payment Method"
+                      styleClass="combo-purchase">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
                         <String fx:value="Cash" />
@@ -31,22 +36,32 @@
                 </items>
             </ComboBox>
 
-            <ComboBox fx:id="userCombo" promptText="Select User" />
+            <ComboBox fx:id="userCombo"
+                      promptText="Select User"
+                      styleClass="combo-purchase" />
 
-            <Label fx:id="priceLabel" style="-fx-font-weight: bold;" />
+            <Label fx:id="priceLabel"
+                   styleClass="label-purchase"
+                   text="" />
 
-            <!-- NEW: history list -->
-            <Label text="Sold Fare Media:" style="-fx-font-weight: bold;" />
-            <ListView fx:id="soldListView" prefHeight="200" />
+            <!-- history list -->
+            <Label text="Sold Fare Media:" styleClass="label-purchase" />
+            <ListView fx:id="soldListView"
+                      prefHeight="200"
+                      styleClass="listview-purchase" />
         </VBox>
     </center>
 
-
     <bottom>
-        <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
-            <Button text="Purchase" onAction="#handlePurchase" />
-            <Button text="Back" onAction="#handleBack" />
+        <HBox spacing="10" styleClass="hbox-purchase">
+            <Button fx:id="purchaseButton"
+                    text="Purchase"
+                    onAction="#handlePurchase"
+                    styleClass="button-purchase" />
+            <Button fx:id="backButton"
+                    text="Back"
+                    onAction="#handleBack"
+                    styleClass="button-back" />
         </HBox>
     </bottom>
-
 </BorderPane>

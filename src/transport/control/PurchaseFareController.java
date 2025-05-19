@@ -86,9 +86,8 @@ public class PurchaseFareController {
                 String.format("Purchased successfully!\nID : %d\nPrice: %.2f DA", fare.getId(), fare.getPrix()));
         alert.showAndWait(); // <-- wait for user to click OK
 
-        // 2) Go back to main menu
-        Stage stage = (Stage) priceLabel.getScene().getWindow();
-        stage.setScene(Main.getMainScene());
+        // 2) Refresh the list of sold fares
+        refreshSoldList();
     }
 
     private void refreshSoldList() {

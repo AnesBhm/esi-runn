@@ -34,7 +34,7 @@
             <HBox spacing="10">
                 <Button text="Back" onAction="#handleBack"/>
             </HBox>
-            <Label text="All Complaints:" style="-fx-font-weight:bold;"/>
+            <Label text="All Complaints:" styleClass="label-complaint"/>
             <ListView fx:id="complaintsListView" prefHeight="200"/>
         </VBox>
     </bottom>

@@ -4,27 +4,28 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.collections.FXCollections?>
 
-<BorderPane xmlns="http://javafx.com/javafx" 
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="transport.control.AddUserController"
-            style="-fx-padding: 20;">
+            stylesheets="@style.css"
+            styleClass="borderpane-adduser">
 
     <center>
-        <GridPane hgap="10" vgap="10">
-            <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-            <TextField fx:id="firstNameField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <GridPane hgap="10" vgap="10" styleClass="gridpane-adduser">
+            <Label text="First Name:" styleClass="label-adduser" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="firstNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="textfield-adduser"/>
 
-            <Label text="Last Name:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <TextField fx:id="lastNameField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <Label text="Last Name:" styleClass="label-adduser" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <TextField fx:id="lastNameField" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="textfield-adduser"/>
 
-            <Label text="Birth Date:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <DatePicker fx:id="birthDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <Label text="Birth Date:" styleClass="label-adduser" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <DatePicker fx:id="birthDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="datepicker-adduser"/>
 
-            <Label text="Disabled:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-            <CheckBox fx:id="handicapCheck" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            <Label text="Disabled:" styleClass="label-adduser" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <CheckBox fx:id="handicapCheck" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="checkbox-adduser"/>
 
-            <Label text="User Type:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <ComboBox fx:id="userTypeCombo" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <Label text="User Type:" styleClass="label-adduser" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <ComboBox fx:id="userTypeCombo" GridPane.columnIndex="1" GridPane.rowIndex="4" styleClass="combo-adduser">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
                         <String fx:value="Passenger"/>
@@ -33,18 +34,15 @@
                 </items>
             </ComboBox>
 
-            <Label text="Employee Function:" GridPane.columnIndex="0" GridPane.rowIndex="5" 
-                   visible="false"/>
-            <ComboBox fx:id="functionCombo" GridPane.columnIndex="1" GridPane.rowIndex="5" 
-                      visible="false"/>
+            <Label text="Employee Function:" GridPane.columnIndex="0" GridPane.rowIndex="5" visible="false" styleClass="label-adduser"/>
+            <ComboBox fx:id="functionCombo" GridPane.columnIndex="1" GridPane.rowIndex="5" visible="false" styleClass="combo-adduser"/>
         </GridPane>
     </center>
 
     <bottom>
         <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
-            <Button text="Save User" onAction="#handleSaveUser"/>
-            <Button text="Back" onAction="#handleBack"/>
+            <Button fx:id="saveButton" text="Save User" onAction="#handleSaveUser" styleClass="button-save"/>
+            <Button fx:id="backButton" text="Back" onAction="#handleBack" styleClass="button-back"/>
         </HBox>
     </bottom>
-
 </BorderPane>

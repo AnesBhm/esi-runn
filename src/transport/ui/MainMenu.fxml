@@ -2,26 +2,31 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx" 
+<VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="transport.control.MainController"
-      spacing="10" 
-      style="-fx-padding: 20; -fx-background-color: #f0f0f0;">
+      stylesheets="@style.css"
+      styleClass="vbox-menu">
 
-    <Button text="Add User" 
+    <Button fx:id="addUserButton"
+            text="Add User"
             onAction="#handleAddUser"
-            style="-fx-font-size: 14; -fx-pref-width: 200;"/>
+            styleClass="menu-button"/>
 
-    <Button text="Purchase Fare Medium" 
+    <Button fx:id="purchaseFareButton"
+            text="Purchase Fare Medium"
             onAction="#handlePurchaseFare"
-            style="-fx-font-size: 14; -fx-pref-width: 200;"/>
+            styleClass="menu-button"/>
 
-    <Button text="Validate Fare" 
+    <Button fx:id="validateFareButton"
+            text="Validate Fare"
             onAction="#handleValidateFare"
-            style="-fx-font-size: 14; -fx-pref-width: 200;"/>
+            styleClass="menu-button"/>
 
-    <Button text="Manage Complaints (Bonus)" 
+    <Button fx:id="complaintsButton"
+            text="Manage Complaints (Bonus)"
             onAction="#handleComplaints"
-            style="-fx-font-size: 14; -fx-pref-width: 200;"/>
+            styleClass="menu-button"
+            id="complaintsButton"/>
 
 </VBox>
