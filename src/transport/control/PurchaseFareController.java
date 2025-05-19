@@ -8,14 +8,25 @@ import javafx.stage.Stage;
 import transport.Main;
 import javafx.scene.Node;
 import java.util.List;
+import java.util.Comparator;
+import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 public class PurchaseFareController {
-    @FXML private ComboBox<String> fareTypeCombo;
-    @FXML private ComboBox<Personne> userCombo;
-    @FXML private Label priceLabel;
+    @FXML
+    private ComboBox<String> fareTypeCombo;
+    @FXML
+    private ComboBox<String> paymentMethodCombo;
+    @FXML
+    private ComboBox<Personne> userCombo;
+    @FXML
+    private Label priceLabel;
+    @FXML
+    private ListView<TitreTransport> soldListView;
 
     private List<Personne> users;
     private List<TitreTransport> fareMedia;
+    private MainController mainController;
 
     public void setUsers(List<Personne> users) {
         this.users = users;
@@ -24,37 +35,70 @@ public class PurchaseFareController {
 
     public void setFareMedia(List<TitreTransport> fareMedia) {
         this.fareMedia = fareMedia;
+        refreshSoldList();
+    }
+
+    public void setMainController(MainController mc) {
+        this.mainController = mc;
+    }
+
+    @FXML
+    private void initialize() {
+        fareTypeCombo.getItems().setAll("Ticket", "Personal Card");
+        paymentMethodCombo.getItems().setAll("Cash", "Dahabia", "BaridiMob");
     }
 
     @FXML
     private void handlePurchase() {
         try {
-            TitreTransport fare = createFare();
+            Personne user = userCombo.getValue();
+            String type = fareTypeCombo.getValue();
+            String payment = paymentMethodCombo.getValue();
+
+            // create the fare
+            TitreTransport fare = "Personal Card".equals(type)
+                    ? new CartePersonnelle(user)
+                    : new Ticket(user);
+
+            fare.setPaymentMethod(payment); // purchase date already set in ctor
             fareMedia.add(fare);
-            priceLabel.setText(String.format("Purchased! Price: %.2f DA", fare.getPrix()));
+
+            // persist immediately
+            mainController.saveData();
+
+            // 1) Show confirmation alert
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Purchase Complete");
+            alert.setHeaderText(null);
+            alert.setContentText(
+                    String.format("Purchased successfully!\nPrice: %.2f DA", fare.getPrix()));
+            alert.showAndWait(); // <-- wait for user to click OK
+
+            // 2) Go back to main menu
+            Stage stage = (Stage) priceLabel.getScene().getWindow();
+            stage.setScene(Main.getMainScene());
+
         } catch (ReductionImpossibleException e) {
             showAlert("Cannot create card: " + e.getMessage());
         }
     }
 
-    private TitreTransport createFare() throws ReductionImpossibleException {
-        Personne user = userCombo.getValue();
-        if("Personal Card".equals(fareTypeCombo.getValue())) {
-            return new CartePersonnelle(user);
-        } else {
-            return new Ticket();
-        }
+    private void refreshSoldList() {
+        // sort fareMedia descending by date
+        List<TitreTransport> sorted = fareMedia.stream()
+                .sorted(Comparator.comparing(TitreTransport::getDateAchat).reversed())
+                .collect(Collectors.toList());
+
+        soldListView.getItems().setAll(sorted);
     }
-     @FXML
+
+    @FXML
     private void handleBack(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(Main.getMainScene());
     }
 
     private void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+        new Alert(Alert.AlertType.INFORMATION, message).showAndWait();
     }
 }

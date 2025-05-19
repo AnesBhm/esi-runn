@@ -4,33 +4,48 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx" 
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="transport.control.PurchaseFareController"
-            style="-fx-padding: 20;">
+<BorderPane xmlns="http://javafx.com/javafx"
+    xmlns:fx="http://javafx.com/fxml"
+    fx:controller="transport.control.PurchaseFareController"
+    style="-fx-padding: 20;">
 
     <center>
         <VBox spacing="10">
             <ComboBox fx:id="fareTypeCombo" promptText="Select Fare Type">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="Ticket"/>
-                        <String fx:value="Personal Card"/>
+                        <String fx:value="Ticket" />
+                        <String fx:value="Personal Card" />
                     </FXCollections>
                 </items>
             </ComboBox>
 
-            <ComboBox fx:id="userCombo" promptText="Select User"/>
-            <!-- userCombo can be populated in your controller -->
-            
-            <Label fx:id="priceLabel" style="-fx-font-weight: bold;"/>
+            <!-- NEW: payment method -->
+            <ComboBox fx:id="paymentMethodCombo" promptText="Select Payment Method">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Cash" />
+                        <String fx:value="Dahabia" />
+                        <String fx:value="BaridiMob" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
+
+            <ComboBox fx:id="userCombo" promptText="Select User" />
+
+            <Label fx:id="priceLabel" style="-fx-font-weight: bold;" />
+
+            <!-- NEW: history list -->
+            <Label text="Sold Fare Media:" style="-fx-font-weight: bold;" />
+            <ListView fx:id="soldListView" prefHeight="200" />
         </VBox>
     </center>
 
+
     <bottom>
         <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
-            <Button text="Purchase" onAction="#handlePurchase"/>
-            <Button text="Back" onAction="#handleBack"/>
+            <Button text="Purchase" onAction="#handlePurchase" />
+            <Button text="Back" onAction="#handleBack" />
         </HBox>
     </bottom>
 

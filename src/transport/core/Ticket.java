@@ -1,8 +1,13 @@
 package transport.core;
+
 import java.time.LocalDate;
 
 public class Ticket extends TitreTransport {
-    public Ticket() {
+
+    private final Personne proprietaire;
+
+    public Ticket(Personne proprietaire) {
+        this.proprietaire = proprietaire;
         this.id = generateId();
         this.dateAchat = LocalDate.now();
         this.prix = 50.0;
@@ -14,5 +19,15 @@ public class Ticket extends TitreTransport {
             throw new TitreNonValideException("Ticket expired. Valid only on: " + dateAchat);
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s for %s on %s — %.2f DA via %s",
+                this.getClass().getSimpleName(),
+                proprietaire,
+                dateAchat,
+                prix,
+                getPaymentMethod());
     }
 }

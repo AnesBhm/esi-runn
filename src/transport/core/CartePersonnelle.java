@@ -1,4 +1,5 @@
 package transport.core;
+
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -19,22 +20,31 @@ public class CartePersonnelle extends TitreTransport {
         double reduction = 0;
         int age = Period.between(proprietaire.getDateNaissance(), LocalDate.now()).getYears();
 
-        if (proprietaire.estHandicape()) reduction = 0.5;
-        else if (proprietaire instanceof Employe) reduction = 0.4;
-        else if (age < 25) reduction = 0.3;
-        else if (age > 65) reduction = 0.25;
+        if (proprietaire.estHandicape())
+            reduction = 0.5;
+        else if (proprietaire instanceof Employe)
+            reduction = 0.4;
+        else if (age < 25)
+            reduction = 0.3;
+        else if (age > 65)
+            reduction = 0.25;
 
-        if (reduction == 0) throw new ReductionImpossibleException();
-        
+        if (reduction == 0)
+            throw new ReductionImpossibleException();
+
         this.prix = 5000 * (1 - reduction);
         determinerType(reduction);
     }
 
     private void determinerType(double reduction) {
-        if (reduction == 0.5) type = TypeCarte.SOLIDARITE;
-        else if (reduction == 0.4) type = TypeCarte.PARTENAIRE;
-        else if (reduction == 0.3) type = TypeCarte.JUNIOR;
-        else type = TypeCarte.SENIOR;
+        if (reduction == 0.5)
+            type = TypeCarte.SOLIDARITE;
+        else if (reduction == 0.4)
+            type = TypeCarte.PARTENAIRE;
+        else if (reduction == 0.3)
+            type = TypeCarte.JUNIOR;
+        else
+            type = TypeCarte.SENIOR;
     }
 
     @Override
@@ -45,5 +55,17 @@ public class CartePersonnelle extends TitreTransport {
         return true;
     }
 
-    public TypeCarte getType() { return type; }
+    public TypeCarte getType() {
+        return type;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s for %s on %s — %.2f DA via %s",
+                this.getClass().getSimpleName(),
+                proprietaire,
+                dateAchat,
+                prix,
+                getPaymentMethod());
+    }
 }

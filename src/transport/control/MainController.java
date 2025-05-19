@@ -27,13 +27,18 @@ public class MainController {
     @FXML
     private void handleAddUser(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/transport/ui/AddUser.fxml"));
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/transport/ui/AddUser.fxml"));
             Parent root = loader.load();
-            
+
             AddUserController controller = loader.getController();
             controller.setUsers(users);
-            
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            // ▶️ Inject your own controller so AddUserController can call saveData()
+            controller.setMainController(this);
+
+            Stage stage = (Stage) ((Node) event.getSource())
+                    .getScene().getWindow();
             stage.setScene(new Scene(root));
         } catch (IOException e) {
             showAlert("Error loading Add User form: " + e.getMessage());
@@ -43,15 +48,22 @@ public class MainController {
     @FXML
     private void handlePurchaseFare(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/transport/ui/PurchaseFare.fxml"));
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/transport/ui/PurchaseFare.fxml"));
             Parent root = loader.load();
-            
+
             PurchaseFareController controller = loader.getController();
             controller.setUsers(users);
             controller.setFareMedia(fareMedia);
-            
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            controller.setMainController(this); // inject MainController
+
+            // Get the same window you’re already on:
+            Stage stage = (Stage) ((Node) event.getSource())
+                    .getScene().getWindow();
+
+            // Simply replace its scene with the purchase form:
             stage.setScene(new Scene(root));
+
         } catch (IOException e) {
             showAlert("Error loading Purchase Fare form: " + e.getMessage());
         }
@@ -62,10 +74,10 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/transport/ui/ValidateFare.fxml"));
             Parent root = loader.load();
-            
+
             ValidateController controller = loader.getController();
             controller.setFareMedia(fareMedia);
-            
+
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
         } catch (IOException e) {
@@ -78,10 +90,10 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/transport/ui/Complaints.fxml"));
             Parent root = loader.load();
-            
+
             ComplaintsController controller = loader.getController();
             controller.setComplaints(complaints);
-            
+
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
         } catch (IOException e) {
